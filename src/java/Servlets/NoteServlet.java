@@ -2,8 +2,10 @@ package Servlets;
 
 import Models.Note;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -60,7 +62,14 @@ public class NoteServlet extends HttpServlet {
             throws ServletException, IOException {
         String title = request.getParameter("title_input");
         String content = request.getParameter("content_input");
+
+        String path = getServletContext().getRealPath("/WEB-INF/note.txt");
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));
         
+        pw.println(title);
+        pw.println(content);
+        pw.close();
+                
         Note note = new Note(title, content);
 
         if (title == null || title.equals("") || content == null || content.equals("")) {
